@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class PortalController {
 	
-	@RequestMapping(value="/welcome")
+	@RequestMapping(value="/hello")
 	public String hello()
 	{
 		return "Welcome To Competency Tracker";
