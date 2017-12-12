@@ -6,6 +6,8 @@ import com.tcs.ct.model.Employee;
 
 public interface EmployeeRepo extends MongoRepository<Employee, Integer> {
 	
+	Employee findByEmployeeId(Integer employeeId);
+	
 	
 	
 

@@ -85,6 +85,14 @@ public class EmployeeService {
 
 
 
+	public Employee getCompetencyFrom(Integer employeeId) {
+		
+		return employeeRepo.findByEmployeeId(employeeId);
+	}
+
+
+
+
 	/*public void deleteEmployeeDetails(DeleteRequest deleteRequest){
 		
 		

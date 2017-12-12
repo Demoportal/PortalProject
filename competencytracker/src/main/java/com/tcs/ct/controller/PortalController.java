@@ -57,4 +57,10 @@ public class PortalController {
 	{
 		employeeService.deleteEmployeeDetails(deleteRequest);;
 	}*/
+	
+	@RequestMapping(value="/getCompetencyFromDb",method=RequestMethod.GET)
+	public Employee getCompetencyFrom(@RequestParam("employeeId") Integer employeeId)
+	{
+		return employeeService.getCompetencyFrom(employeeId);
+	}
 }
