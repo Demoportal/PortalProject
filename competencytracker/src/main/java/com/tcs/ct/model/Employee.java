@@ -2,6 +2,7 @@ package com.tcs.ct.model;
 
 import java.util.List;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.tcs.ct.dto.Competency;
@@ -9,6 +10,7 @@ import com.tcs.ct.dto.Competency;
 @Document(collection="Employee")
 public class Employee {
 	
+	@Id
 	Integer employeeId;
 	String employeeName;
 	String employeeEmail;

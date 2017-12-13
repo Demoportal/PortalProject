@@ -23,6 +23,32 @@ public class Competency {
 	public void setCompetencyLevel(String competencyLevel) {
 		this.competencyLevel = competencyLevel;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((competencyId == null) ? 0 : competencyId.hashCode());
+		
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Competency other = (Competency) obj;
+		if (competencyId == null) {
+			if (other.competencyId != null)
+				return false;
+		} else if (!competencyId.equals(other.competencyId))
+			return false;
+		
+		return true;
+	}
+	
 	
 	
 

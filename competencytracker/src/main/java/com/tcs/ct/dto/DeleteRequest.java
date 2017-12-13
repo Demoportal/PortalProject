@@ -1,14 +1,17 @@
 package com.tcs.ct.dto;
 
+import java.util.List;
+
 public class DeleteRequest {
 
-	Integer competencyId;
+	List <Competency>competencyList;
 	Integer employeeId;
-	public Integer getCompetencyId() {
-		return competencyId;
+	
+	public List<Competency> getCompetencyList() {
+		return competencyList;
 	}
-	public void setCompetencyId(Integer competencyId) {
-		this.competencyId = competencyId;
+	public void setCompetencyList(List<Competency> competencyList) {
+		this.competencyList = competencyList;
 	}
 	public Integer getEmployeeId() {
 		return employeeId;
