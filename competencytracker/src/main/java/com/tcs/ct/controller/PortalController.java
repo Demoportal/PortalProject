@@ -3,7 +3,14 @@ package com.tcs.ct.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,135 +29,126 @@ import com.tcs.ct.service.EmployeeService;
 
 @CrossOrigin
 @RestController
+
 public class PortalController {
-	
+
 	@Autowired
 	EmployeeService employeeService;
-	
-	@RequestMapping(value="/test")
-	public String test()
-	{
+
+	@RequestMapping(value = "/test")
+	public String test() {
 		return employeeService.test();
 	}
 
-	
-	
-//	@RequestMapping(value="/getCompetency",method=RequestMethod.GET)
-//	public Employee getCompetency(@RequestParam("employeeId") Integer employeeId)
-//	{
-//		return employeeService.getEmployee(employeeId);
-//	}
-	
-	
-	
-	//To get all employees
+	/*
+	 * @GET
+	 * 
+	 * @Path("/test")
+	 * 
+	 * @Produces(MediaType.APPLICATION_JSON_VALUE) public String test() { return
+	 * employeeService.test(); }
+	 */
 
-	@RequestMapping(value="/getAllEmployee",method=RequestMethod.GET)
-	public List<Employee> getEmployeeDetails()
-	{
-		List<Employee> empList=new ArrayList<>();
+	// @RequestMapping(value="/getCompetency",method=RequestMethod.GET)
+	// public Employee getCompetency(@RequestParam("employeeId") Integer
+	// employeeId)
+	// {
+	// return employeeService.getEmployee(employeeId);
+	// }
+
+	// To get all employees
+
+	@RequestMapping(value = "/getAllEmployee", method = RequestMethod.GET)
+	public List<Employee> getEmployeeDetails() {
+		List<Employee> empList = new ArrayList<>();
 		try {
-			empList=employeeService.getEmployeeDetails();
+			empList = employeeService.getEmployeeDetails();
 		} catch (CompetencyException e) {
-			
-			
+
 		}
 		return empList;
 	}
-	
-	
-	//To add new employee
-	
-	@RequestMapping(value="/addEmployeedetails",method=RequestMethod.POST)
-	public ResponseDTO getEmployeeDetails(@RequestBody  EmployeeRequest employeeRequest)
-	{
+
+	// To add new employee
+
+	@RequestMapping(value = "/addEmployeedetails", method = RequestMethod.POST)
+	public ResponseDTO getEmployeeDetails(@RequestBody EmployeeRequest employeeRequest) {
+		ResponseDTO response = new ResponseDTO();
+		try {
+			employeeService.saveEmployeeDetails(employeeRequest);
+			response.setResponseCode(0);
+			response.setResponseMessage("EmployeeDetails added successfully");
+		} catch (Exception e) {
+			response.setResponseCode(1);
+			response.setResponseMessage(e.getMessage());
+		}
+		return response;
+	}
+
+	// To delete competency of an employee
+	@RequestMapping(value = "/deleteCompetency", method = RequestMethod.DELETE)
+	public ResponseDTO deleteCompetencyDetails(@RequestBody DeleteRequest deleteRequest) {
 		ResponseDTO response = new ResponseDTO();
 		try
+
 		{
-		employeeService.saveEmployeeDetails(employeeRequest);
-		response.setResponseCode(0);
-		response.setResponseMessage("EmployeeDetails added successfully");
-		}
-		catch(Exception e)
-		{
+			employeeService.deleteEmployeeDetails(deleteRequest);
+			response.setResponseCode(0);
+			response.setResponseMessage("CompetencyDetails got deleted successfully");
+
+		} catch (Exception e) {
 			response.setResponseCode(1);
-			response.setResponseMessage("Failed to add Employeedetails");
+			response.setResponseMessage(e.getMessage());
 		}
 		return response;
 	}
-	
-	
-	//To delete competency of an employee
-	@RequestMapping(value="/deleteCompetency",method=RequestMethod.POST)
-	public ResponseDTO deleteCompetencyDetails(@RequestBody DeleteRequest deleteRequest)
-	{
-		ResponseDTO response=new ResponseDTO();
-		try
-	
-	{
-		employeeService.deleteEmployeeDetails(deleteRequest);
-		response.setResponseCode(0);
-		response.setResponseMessage("CompetencyDetails got deleted successfully");
-		
+
+	// To get a particular employee details
+
+	@RequestMapping(value = "/getEmployee", method = RequestMethod.GET)
+	public Employee getCompetencyFrom(@RequestParam("employeeId") Integer employeeId) {
+		Employee employee = new Employee();
+
+		try {
+			employee = employeeService.getCompetencyFrom(employeeId);
+		} catch (Exception e) {
+
+		}
+		return employee;
 	}
-		catch(Exception e)
-		{
+
+	// To add competency details of an employee
+	@RequestMapping(value = "/addCompetency", method = RequestMethod.POST)
+	public ResponseDTO addCompetency(@RequestBody AddCompRequest addCompRequest) {
+		ResponseDTO response = new ResponseDTO();
+		try {
+			employeeService.addCompetency(addCompRequest);
+			response.setResponseCode(0);
+			response.setResponseMessage("Competencies added successfully");
+
+		} catch (Exception e) {
 			response.setResponseCode(1);
-			response.setResponseMessage("Failed to delete competency details" );
+			response.setResponseMessage(e.getMessage());
 		}
 		return response;
+
 	}
-	
-	//To get a particular employee details
-	
-	@RequestMapping(value="/getEmployee",method=RequestMethod.GET)
-	public Employee getCompetencyFrom(@RequestParam("employeeId") Integer employeeId)
-	{ 
-		Employee employee=new Employee();
-	
-	try
-	{
-		employee= employeeService.getCompetencyFrom(employeeId);
-	}
-	catch(Exception e)
-	{
-		
-		}
-	return employee;
-	}
-	
-	
-	//To add competency details of an employee
-	@RequestMapping(value="/addCompetency",method=RequestMethod.POST)
-	public ResponseDTO addCompetency(@RequestBody AddCompRequest addCompRequest)
-	{
-		ResponseDTO response=new ResponseDTO();
-		try
-		{
-		 employeeService.addCompetency(addCompRequest);
-		 response.setResponseCode(0);
-		 response.setResponseMessage("Competency Details added successfully");
-		}
-		catch(Exception e)
-		{
-			 response.setResponseCode(1);
-			 response.setResponseMessage("Failed to add  competency Details");
+
+	// To edit competency of an existing employee
+	@RequestMapping(value = "/editCompetency", method = RequestMethod.PUT)
+	public ResponseDTO editCompetetency(@RequestBody EditRequest editRequest) {
+		ResponseDTO response = new ResponseDTO();
+		try {
+
+			response = employeeService.editCompetency(editRequest);
+			response.setResponseCode(0);
+			response.setResponseMessage("Competencies updated successwfully");
+		} catch (Exception e) {
+			response.setResponseCode(1);
+			response.setResponseMessage(e.getMessage());
 		}
 		return response;
-		
+
 	}
-	
-	
-	//To edit competency of an existing employee
-	@RequestMapping(value="/editCompetency",method=RequestMethod.POST)
-	public void editCompetetency(@RequestBody EditRequest editRequest)
-	{try
-	{
-		 employeeService.editCompetency(editRequest);
-	}
-	catch(Exception e)
-	{}
-	
-	}
-	
+
 }

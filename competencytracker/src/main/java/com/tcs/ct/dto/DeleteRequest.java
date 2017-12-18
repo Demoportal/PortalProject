@@ -4,13 +4,13 @@ import java.util.List;
 
 public class DeleteRequest {
 
-	List <Competency>competencyList;
+	List <Integer>competencyList;
 	Integer employeeId;
 	
-	public List<Competency> getCompetencyList() {
+	public List<Integer> getCompetencyList() {
 		return competencyList;
 	}
-	public void setCompetencyList(List<Competency> competencyList) {
+	public void setCompetencyList(List<Integer> competencyList) {
 		this.competencyList = competencyList;
 	}
 	public Integer getEmployeeId() {
