@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tcs.ct.dto.AddAllCompRequest;
 import com.tcs.ct.dto.AddCompRequest;
 import com.tcs.ct.dto.Competency;
 import com.tcs.ct.dto.DeleteRequest;
@@ -14,8 +15,12 @@ import com.tcs.ct.dto.EditRequest;
 import com.tcs.ct.dto.EmployeeRequest;
 import com.tcs.ct.dto.ResponseDTO;
 import com.tcs.ct.exception.CompetencyException;
+import com.tcs.ct.model.CompetencyDetails;
 import com.tcs.ct.model.Employee;
+import com.tcs.ct.model.UserDetails;
+import com.tcs.ct.repo.CompetencyRepo;
 import com.tcs.ct.repo.EmployeeRepo;
+import com.tcs.ct.repo.UserRepo;
 
 @Service
 public class EmployeeService {
@@ -23,6 +28,11 @@ public class EmployeeService {
 	@Autowired
 	EmployeeRepo employeeRepo;
 
+	@Autowired
+	UserRepo userRepo;
+	
+	@Autowired
+	CompetencyRepo competencyRepo;
 	public String test() {
 		return "Welcome To Competency Tracker";
 	}
@@ -96,6 +106,7 @@ public class EmployeeService {
 		try {
 
 			employee = employeeRepo.findByEmployeeId(employeeId);
+			
 
 		} catch (Exception e)
 
@@ -203,5 +214,43 @@ public class EmployeeService {
 		}
 		return response;
 	}
+	
+	public List<CompetencyDetails> getCompetency() throws CompetencyException
+	{
+		List<CompetencyDetails>	CompetencyDetails =new ArrayList<>();
+		CompetencyDetails=competencyRepo.findAll();
+		return CompetencyDetails;
+		
+	}
 
+	public void addAllCompetency(AddAllCompRequest addAllCompRequest) throws CompetencyException{
+		// TODO Auto-generated method stub
+		CompetencyDetails competencyDetails= new CompetencyDetails();
+		competencyDetails.setCompId(addAllCompRequest.getCompetencyId());
+		competencyDetails.setCompList(addAllCompRequest.getCompList());
+		competencyDetails.setCompName(addAllCompRequest.getCompetencyName());
+		competencyRepo.save(competencyDetails);
+	}
+/*
+	public  void deleteCompetency(Integer compid)  throws CompetencyException{
+		// TODO Auto-generated method stub
+		
+		
+		
+		
+	}*/
+
+	public void addUser(UserDetails user) {
+		// TODO Auto-generated method stub
+		UserDetails userDetails= new UserDetails();
+		
+		userDetails.setUserName(user.getUserName());
+		userDetails.setPassword(user.getPassword());
+		userDetails.setRole(user.getRole());
+		userRepo.save(userDetails);
+		
+	}
+	
+	
+	
 }
